@@ -7,7 +7,7 @@ import java.io.FileNotFoundException;
 public class Dictionnaire{
 
   public HashMap<String, HashSet<String>> set ;
-  private int limite_Nb_Mot = 50000;
+  private int limite_Nb_Mot = 10000;
 
   public Dictionnaire(String s) throws FileNotFoundException{
 
@@ -154,16 +154,14 @@ public class Dictionnaire{
               map.put(mot,1);
             }
             else{
-              map.put(mot,map.get(mot)+1);
+              //map.put(mot,map.get(mot)+1);
+              map.replace(mot,map.get(mot),map.get(mot)+1);
             }
           }
         }
       }
       if (map.size() <= limite_Nb_Mot) {
-        HashSet<String> set = new HashSet<String>();
-        for (String s : map.keySet()) {
-          set.add(s);
-        }
+        HashSet<String> set = new HashSet<String>(map.keySet());
         return set;
       }
       return selectInMax(map, limite_Nb_Mot);
@@ -185,7 +183,6 @@ public class Dictionnaire{
                     }
                 }
             }
-        if(set.size()<5)System.exit(-5);
         return set;
     }
         /*
