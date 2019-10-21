@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.*;
 import java.lang.System;
 import java.io.FileInputStream;
@@ -7,7 +8,7 @@ import java.io.FileNotFoundException;
 public class Dictionnaire{
 
   public HashMap<String, HashSet<String>> set ;
-  private int limite_Nb_Mot = 10000;
+  private int limite_Nb_Mot = Integer.MAX_VALUE;
 
   public Dictionnaire(String s) throws FileNotFoundException{
 
@@ -149,12 +150,13 @@ public class Dictionnaire{
 
       for (String tri : trigramOfString(str)) {
         if (set.get(tri) != null) {
+
           for (String mot : set.get(tri)) {
+
             if (map.get(mot) == null) {
               map.put(mot,1);
             }
             else{
-              //map.put(mot,map.get(mot)+1);
               map.replace(mot,map.get(mot),map.get(mot)+1);
             }
           }
@@ -169,43 +171,32 @@ public class Dictionnaire{
 
     //retourne un hashSet de taille max contenant les string avec le plus petit integer
     public HashSet<String> selectInMin(HashMap<String, Integer> map, int max) {
-
-        HashSet<String> set = new HashSet<String>(0);
-        int minValue = Collections.min(map.values());
-        System.out.println(minValue+"min value");
-            for(int i = 0;i<max*10;i++){
+      HashSet<String> set = new HashSet<String>(0);
+        if(map.size()<=max){
+          set = new HashSet<String>(map.keySet());
+          return set;
+        }
+        List<Integer> listOfValue = new ArrayList<Integer>(map.values());
+        Collections.sort(listOfValue);
+        List<Integer> low5 = listOfValue.subList(0,max);
+      System.out.println(low5);
+      if(map.containsValue(1)) System.out.println("WTF");
+            int i = 0;
+            while(set.size()<max && !map.isEmpty()){
                 for (Map.Entry<String, Integer> entry : map.entrySet()) {
-                    if (entry.getValue() == minValue && set.size()<max) {
-                        set.add(entry.getKey());
-                        map.entrySet().remove(entry.getKey());
-                        minValue = Collections.min(map.values())+1;
-
+                  if (set.size() < max) {
+                    if (entry.getValue() == low5.get(i)) {
+                      set.add(entry.getKey());
+                      map.entrySet().remove(entry.getKey());
+                      i++;
                     }
+                  }
                 }
             }
+      System.out.println(set.toString());
         return set;
     }
-        /*
-      int maxValue = 10000;
-      String key = null;
-      HashSet<String> set = new HashSet<String>(0);
-      while (set.size() < max && !(map.isEmpty())) {
-        for (String s : map.keySet()) {
-          if (maxValue > map.get(s)) {
-            maxValue = map.get(s);
-            key = s;
-          }
-        }
-        set.add(key);
-        map.remove(key);
-        maxValue = 10000;
-        key = null;
-      }
 
-      return set;
-
-    }
-*/
 
     //retourne un hashSet de taille max contenant les string avec le plus grand integer
     public HashSet<String> selectInMax(HashMap<String, Integer> map, int max){
@@ -213,31 +204,14 @@ public class Dictionnaire{
         int maxValue = Collections.max(map.values());
         for (Map.Entry<String, Integer> entry : map.entrySet()) {
             if (entry.getValue() == maxValue && set.size()<max) {
-                set.add(entry.getKey());
-                map.entrySet().remove(entry.getKey());
-                maxValue = Collections.max(map.values());
-
+              set.add(entry.getKey());
+              map.entrySet().remove(entry.getKey());
+              maxValue = Collections.max(map.values());
             }
-        }
-        System.out.println(set.size()+"Taille in max");
+            else maxValue--;
+      }
         return set;
 
-/*
-      String key = null;
-
-      while (set.size() < max && !(map.isEmpty())) {
-        for (String s : map.keySet()) {
-          if (maxValue < map.get(s)) {
-            maxValue = map.get(s);
-            key = s;
-          }
-        }
-        set.add(key);
-        map.remove(key);
-        maxValue = 0;
-        key = null;
-      }
-      */
 
     }
 
@@ -245,20 +219,11 @@ public class Dictionnaire{
     public HashSet<String> selectedWord(HashSet<String> set, String str){
       HashMap<String , Integer> map = new HashMap<String , Integer>();
       for (String mot : set) {
-        map.put(mot, Levenshtein.levenshteinDistance(str,mot));
+        map.put(mot, Levenshtein.levenshteinDistance(str,mot) );
       }
       return selectInMin(map, 5);
     }
 
-//Autres solution mais long en execution car parcours tout les mots de fautes et de dico
-/*  public void corrige(String fautes, String mot){
-    Levenshtein lev = new Levenshtein(fautes,mot);
-    int d = lev.distance();
-    if(d<5){
-      System.out.println(fautes+" peut etre corrige par "+mot);
-      System.out.println("Temps d'execution : "+System.nanoTime());
-    }
-  }*/
 
 
 }
