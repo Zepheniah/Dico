@@ -105,7 +105,6 @@ public class Dictionnaire{
 
       System.out.println("Suggestion pour "+s+" : ");
       System.out.println(selectedWord(closestWord(s),s).toString());
-      System.out.println();
 
     return;
   }
@@ -137,11 +136,9 @@ public class Dictionnaire{
       HashMap<String , Integer> map = new HashMap<String , Integer>();
 
       for (String tri : trigramOfString(str)) {
-        if (set.get(tri) != null) {
-
+        if (set.containsKey(tri)) {
           for (String mot : set.get(tri)) {
-
-            if (map.get(mot) == null) {
+            if (!map.containsKey(mot)) {
               map.put(mot,1);
             }
             else{
