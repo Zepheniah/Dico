@@ -25,18 +25,13 @@ public class Main{
     System.out.println("Temps creation dictionnaire : "+(temps1 - temps)/ 1_000_000_000.0 + " secondes");
 
     Scanner scan2 = new Scanner(stdin);
-    System.out.println("Voulez vous afficher les suggestion de correction ? [Y/N]");
-    String s = scan2.nextLine();
 
-    if(s.compareTo("Y")==0||s.compareTo("y")==0){
-      aff=true;
-    }
     long temps_debut = System.nanoTime();
     System.setIn(new FileInputStream(Fautepathfile));
     Scanner scan = new Scanner(System.in);
 
     while(scan.hasNext()){
-      dico.corrige(scan.nextLine(),aff);
+      dico.corrige(scan.nextLine());
     }
     long temps_fin = System.nanoTime();
 
@@ -55,7 +50,7 @@ public class Main{
         return;
       }
       if(str.compareTo("")!=0){
-        dico.corrige(str,true);
+        dico.corrige(str);
       }
     }
 

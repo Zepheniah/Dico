@@ -25,17 +25,17 @@ public class Dictionnaire{
 
       if(buff.length() == 1){
         trigramme ="<"+buff+">";
-        add(trigramme,buff,set);
+        add(trigramme,buff);
       }
       else{
         trigramme = "<"+buff.substring(0,2);
-        add(trigramme,buff,set);
+        add(trigramme,buff);
         for(int i=0;i<buff.length()-2;i++){
           trigramme = buff.substring(i,i+3)+"";
-          add(trigramme,buff,set);
+          add(trigramme,buff);
         }
         trigramme = buff.substring(buff.length()-2,buff.length()-1)+">";
-        add(trigramme,buff,set);
+        add(trigramme,buff);
       }
 
 
@@ -43,11 +43,11 @@ public class Dictionnaire{
 
   }
 
-  public void add(String trigramme, String n, HashMap<String, HashSet<String>> s){
-    if(s.get(trigramme) == null){
-      s.put(trigramme,new HashSet<String>());
+  public void add(String trigramme, String n){
+    if(set.get(trigramme) == null){
+      set.put(trigramme,new HashSet<String>());
     }
-    s.get(trigramme).add(n);
+    set.get(trigramme).add(n);
   }
 
   public void affiche(){
@@ -75,7 +75,7 @@ public class Dictionnaire{
     return false;
   }
 
-  public void corrige(String s, Boolean t){
+  public void corrige(String s){
     //Le mot est dans le dictionnaire
 
     if(contiens(s)){
@@ -101,25 +101,11 @@ public class Dictionnaire{
 
 
     //Le mot n'est pas dans le dictionnaire
-    if(t){
+
+
       System.out.println("Suggestion pour "+s+" : ");
-    }
-      long t1 = System.nanoTime();
-    for(String mot : selectedWord(closestWord(s),s)){
-
-      if(!t){
-        System.out.println("calcul en cours pour : "+mot+"");
-      }
-      if(t){
-        System.out.println(mot + " ");
-      }
-    }
-      long t2 = System.nanoTime();
-      System.out.println("Temps de correction : "+ (t2 - t1) / 1_000_000_000.0 +" secondes");
-    if(t){
+      System.out.println(selectedWord(closestWord(s),s).toString());
       System.out.println();
-    }
-
 
     return;
   }
