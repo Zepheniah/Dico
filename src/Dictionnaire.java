@@ -8,7 +8,7 @@ import java.io.FileNotFoundException;
 public class Dictionnaire{
 
   public HashMap<String, HashSet<String>> set ;
-  private int limite_Nb_Mot = Integer.MAX_VALUE;
+  private int limite_Nb_Mot = 375;
 
   public Dictionnaire(String s) throws FileNotFoundException{
 
@@ -98,6 +98,8 @@ public class Dictionnaire{
       System.out.println("Le mot "+s+" est dans le dictionnaire avec une majusucle en debut");
       return;
     }
+
+
     //Le mot n'est pas dans le dictionnaire
     if(t){
       System.out.println("Suggestion pour "+s+" : ");
@@ -179,21 +181,15 @@ public class Dictionnaire{
         List<Integer> listOfValue = new ArrayList<Integer>(map.values());
         Collections.sort(listOfValue);
         List<Integer> low5 = listOfValue.subList(0,max);
-      System.out.println(low5);
-      if(map.containsValue(1)) System.out.println("WTF");
-            int i = 0;
-            while(set.size()<max && !map.isEmpty()){
                 for (Map.Entry<String, Integer> entry : map.entrySet()) {
                   if (set.size() < max) {
-                    if (entry.getValue() == low5.get(i)) {
+                    if (low5.contains(entry.getValue())){
+                      low5.remove(low5.indexOf(entry.getValue()));
                       set.add(entry.getKey());
                       map.entrySet().remove(entry.getKey());
-                      i++;
                     }
                   }
                 }
-            }
-      System.out.println(set.toString());
         return set;
     }
 
@@ -201,14 +197,17 @@ public class Dictionnaire{
     //retourne un hashSet de taille max contenant les string avec le plus grand integer
     public HashSet<String> selectInMax(HashMap<String, Integer> map, int max){
         HashSet<String> set = new HashSet<String>(0);
-        int maxValue = Collections.max(map.values());
+        List<Integer> listOfValue = new ArrayList<>(map.values());
+        Collections.sort(listOfValue,Collections.reverseOrder());
+        List<Integer> maxOcc = listOfValue.subList(0,limite_Nb_Mot);
+        //int maxValue = Collections.max(map.values());
         for (Map.Entry<String, Integer> entry : map.entrySet()) {
-            if (entry.getValue() == maxValue && set.size()<max) {
+            if (maxOcc.contains(entry.getValue()) && set.size()<max) {
+              maxOcc.remove(maxOcc.indexOf(entry.getValue()));
               set.add(entry.getKey());
               map.entrySet().remove(entry.getKey());
-              maxValue = Collections.max(map.values());
+
             }
-            else maxValue--;
       }
         return set;
 

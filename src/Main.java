@@ -13,23 +13,26 @@ public class Main{
 
     InputStreamReader stdin = new InputStreamReader(System.in);
 
+    String Dicopathfile = "./src/dico.txt";
+    String Fautepathfile ="./src/fautes.txt";
+
     Boolean aff=false;
 
     long temps = System.nanoTime();
-    Dictionnaire dico = new Dictionnaire(argv[0]);
+    Dictionnaire dico = new Dictionnaire(Dicopathfile);
     long temps1 = System.nanoTime();
 
-    System.out.println("Temps creation dicotionnaire : "+(temps1 - temps)/ 1_000_000_000.0 + " secondes");
+    System.out.println("Temps creation dictionnaire : "+(temps1 - temps)/ 1_000_000_000.0 + " secondes");
 
     Scanner scan2 = new Scanner(stdin);
-    System.out.println("Voules vous afficher les suggestion de correction ? [Y/N]");
+    System.out.println("Voulez vous afficher les suggestion de correction ? [Y/N]");
     String s = scan2.nextLine();
 
     if(s.compareTo("Y")==0||s.compareTo("y")==0){
       aff=true;
     }
     long temps_debut = System.nanoTime();
-    System.setIn(new FileInputStream(argv[1]));
+    System.setIn(new FileInputStream(Fautepathfile));
     Scanner scan = new Scanner(System.in);
 
     while(scan.hasNext()){
