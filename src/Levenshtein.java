@@ -31,6 +31,9 @@ public class Levenshtein{
   public int distance(){
     return dist_progdyn(m, n);
   }
+
+  //Algorithm recuperé sur https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance
+  //Version optimisé de l'algo Levenshtein basique codé plus bas mais plus utilisé
   public static int levenshteinDistance (String lhs, String rhs) {
 
 
@@ -76,6 +79,8 @@ public class Levenshtein{
     // the distance is the cost for transforming all letters in both strings
     return cost[len0 - 1];
   }
+
+  //Levenstein codé par moi,obselete
   public int dist_progdyn(int i, int j){
 
     if(tab[i][j] != -1){

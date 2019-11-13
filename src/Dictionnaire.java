@@ -58,7 +58,7 @@ public class Dictionnaire{
     }
   }
 
-  public Boolean contiens(String mot){
+  public Boolean contains(String mot){
     if (mot.length() == 1 && set.get("<" + mot + ">") != null) {
       return set.get("<" + mot + ">").contains(mot);
     }
@@ -75,26 +75,26 @@ public class Dictionnaire{
     return false;
   }
 
-  public void corrige(String s){
+  public void correction(String s){
     //Le mot est dans le dictionnaire
 
-    if(contiens(s)){
+    if(contains(s)){
       System.out.println("Le mot "+s+" est dans le dictionnaire");
       return;
     }
     //Le mot est dans le dictionnaire mais en majuscule
-    if(contiens(s.toUpperCase())){
+    if(contains(s.toUpperCase())){
         long t1 = System.nanoTime();
       System.out.println("Le mot "+s+" est dans le dictionnaire en majuscule");
       return;
     }
     //Le mot est dans le dictionnaire mais en minuscule
-    if(contiens(s.toLowerCase())){
+    if(contains(s.toLowerCase())){
       System.out.println("Le mot "+s+" est dans le dictionnaire en minuscule");
       return;
     }
     //Le mot d'écrit avec une majuscule au debut
-    if(contiens(s.substring(0,1).toUpperCase()+s.substring(1) )){
+    if(contains(s.substring(0,1).toUpperCase()+s.substring(1) )){
       System.out.println("Le mot "+s+" est dans le dictionnaire avec une majusucle en debut");
       return;
     }

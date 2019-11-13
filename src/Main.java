@@ -16,22 +16,21 @@ public class Main{
     String Dicopathfile = "./src/dico.txt";
     String Fautepathfile ="./src/fautes.txt";
 
-    Boolean aff=false;
-
+    Scanner scanConsole;
     long temps = System.nanoTime();
     Dictionnaire dico = new Dictionnaire(Dicopathfile);
     long temps1 = System.nanoTime();
 
     System.out.println("Temps creation dictionnaire : "+(temps1 - temps)/ 1_000_000_000.0 + " secondes");
 
-    Scanner scan2 = new Scanner(stdin);
+
 
     long temps_debut = System.nanoTime();
     System.setIn(new FileInputStream(Fautepathfile));
     Scanner scan = new Scanner(System.in);
 
     while(scan.hasNext()){
-      dico.corrige(scan.nextLine());
+      dico.correction(scan.nextLine());
     }
     long temps_fin = System.nanoTime();
 
@@ -39,18 +38,18 @@ public class Main{
 
     Boolean b = true;
 
-    scan2 = new Scanner(stdin);
+    scanConsole = new Scanner(stdin);
     String str;
 
     while(b){
       System.out.println("Entrez un mot ou 0 pour quitter");
 
-      str = scan2.nextLine();
+      str = scanConsole.nextLine();
       if(str.compareTo("0") == 0){
         return;
       }
       if(str.compareTo("")!=0){
-        dico.corrige(str);
+        dico.correction(str);
       }
     }
 
